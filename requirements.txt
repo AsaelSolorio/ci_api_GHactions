@@ -1,0 +1,7 @@
+fastapi[all]
+python-dotenv
+pylint
+black
+pycountry
+pytest
+pytest-sugar 

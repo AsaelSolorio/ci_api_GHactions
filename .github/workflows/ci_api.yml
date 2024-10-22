@@ -1,0 +1,64 @@
+name: Python application test with GitHub Actions
+
+# Enable the workflow to be triggered on push and manually via workflow_dispatch
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - uses: actions/checkout@v3
+        name: Checkout Code
+
+      # Step 2: Set up Python 3.10 using the latest version of setup-python
+      - name: Set up Python 3.10.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10.12
+
+      # Step 3: Cache Python dependencies to avoid reinstalling on each run
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Log important context variables
+      - name: Log Context Information
+        run: |
+          echo "Actor: $GITHUB_ACTOR"
+          echo "Event Name: $GITHUB_EVENT_NAME"
+          echo "Job Name: $GITHUB_JOB"
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Run Number: $GITHUB_RUN_NUMBER"
+
+      # Step 4: Install dependencies using the make command
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies..."
+          make install
+
+      # Step 5: Lint the code with pylint
+      - name: Lint with pylint
+        run: |
+          echo "Linting the code..."
+          make lint
+
+      # Step 6: Test the code with pytest
+      - name: Test with pytest
+        run: |
+          echo "Testing the code..."
+          make test
+
+      # Step 7: Format the code
+      - name: Format code
+        run: |
+          echo "Formatting the code..."
+          make format
