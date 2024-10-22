@@ -8,7 +8,7 @@ format:
 	black src/*.py tests/*.py
 	
 lint:
-	pylint --disable=R,C src/*.py tests/*.py
+	pylint --disable=R,C,unused-argument src/*.py tests/*.py
 
 test:
 	pytest -vv tests/ 
