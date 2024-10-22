@@ -41,6 +41,10 @@ jobs:
           echo "Repository: $GITHUB_REPOSITORY"
           echo "Run Number: $GITHUB_RUN_NUMBER"
 
+      # Set environment variable for API key
+      - name: Set API Key
+        run: echo "API_KEY=${{ secrets.API_KEY }}" >> $GITHUB_ENV
+
       # Step 4: Install dependencies using the make command
       - name: Install dependencies
         run: |
